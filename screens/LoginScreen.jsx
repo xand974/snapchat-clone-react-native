@@ -2,9 +2,9 @@ import React from "react";
 import { Text, View, SafeAreaView, TouchableOpacity } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import Icon from "react-native-vector-icons/AntDesign";
-import { signInWithRedirect, GoogleAuthProvider } from "@firebase/auth";
-import * as GoogleAuth from "expo-google-app-auth";
-import { auth, provider } from "../firebase";
+import { GoogleAuthProvider } from "@firebase/auth";
+import { logInAsync } from "expo-google-app-auth";
+import { auth } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
 import { signInWithCredential } from "firebase/auth";
 import { REACT_APP_IOS_CLIENT_ID, REACT_APP_ANDROID_CLIENT_ID } from "@env";
@@ -14,7 +14,7 @@ export default function LoginScreen() {
 
   const login = async () => {
     try {
-      const result = await GoogleAuth.logInAsync({
+      const result = await logInAsync({
         androidClientId: REACT_APP_ANDROID_CLIENT_ID,
         iosClientId: REACT_APP_IOS_CLIENT_ID,
         scopes: ["profile", "email"],
@@ -27,9 +27,6 @@ export default function LoginScreen() {
       } else {
         return { cancelled: true };
       }
-      // await signInWithRedirect(auth, provider).then(() => {
-      //   navigation.replace("HomeScreen");
-      // });
     } catch (err) {
       console.log(err);
     }
