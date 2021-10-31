@@ -10,4 +10,6 @@ Firebase :
 - Storage
 - Hosting
 
-- Camera API
+Autres API :
+
+- Camera
