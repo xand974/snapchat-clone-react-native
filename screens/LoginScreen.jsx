@@ -23,7 +23,7 @@ export default function LoginScreen() {
         const { idToken, accessToken } = result;
         const credential = GoogleAuthProvider.credential(idToken, accessToken);
         await signInWithCredential(auth, credential);
-        navigation.replace("HomeScreen");
+        navigation.replace("MainScreen");
       } else {
         return { cancelled: true };
       }

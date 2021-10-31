@@ -1,9 +1,10 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect } from "react";
 import {
   View,
   TouchableOpacity,
   ScrollView,
   RefreshControl,
+  SafeAreaView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Avatar } from "react-native-elements";
@@ -12,21 +13,35 @@ import AntIcon from "react-native-vector-icons/AntDesign";
 import tw from "tailwind-react-native-classnames";
 import { auth } from "../firebase";
 import ListItem from "../components/ListItem";
+import { signOut } from "@firebase/auth";
 
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-export default function HomeScreen() {
+export default function FeedScreen() {
   const navigation = useNavigation();
   const user = auth.currentUser;
   const [refreshing, setRefreshing] = React.useState(false);
 
+  //#region refresh
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
+  //#endregion
 
+  const logout = async () => {
+    try {
+      await signOut(auth).then(() => {
+        navigation.replace("LoginScreen");
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  //#region  Layout
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "Chat",
@@ -38,7 +53,9 @@ export default function HomeScreen() {
       headerShadowVisible: false,
       headerLeft: () => (
         <View style={tw`flex-row items-center`}>
-          <Avatar rounded source={{ uri: user.photoURL }} />
+          <TouchableOpacity onPress={() => logout()}>
+            <Avatar rounded source={{ uri: user.photoURL }} />
+          </TouchableOpacity>
           <TouchableOpacity style={tw`bg-gray-100 p-2 ml-3 rounded-full`}>
             <Icon name="magnifying-glass" size={20} color="gray" />
           </TouchableOpacity>
@@ -51,14 +68,18 @@ export default function HomeScreen() {
       ),
     });
   }, []);
+  //#endregion
+
   return (
-    <ScrollView
-      style={tw` h-full pt-3 bg-white`}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
-      <ListItem />
-    </ScrollView>
+    <SafeAreaView>
+      <ScrollView
+        style={tw` h-full pt-3 bg-white`}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <ListItem />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
