@@ -9,9 +9,11 @@ export default function RoundedInlineButton({
   colorIcon,
   onPress,
   styles,
+  disabled = false,
 }) {
   return (
     <TouchableOpacity
+      disabled={disabled}
       style={tw.style(`bg-gray-100 p-2 rounded-full`, styles)}
       onPress={onPress}
     >

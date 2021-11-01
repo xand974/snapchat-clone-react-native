@@ -4,8 +4,9 @@ import tw from "tailwind-react-native-classnames";
 import { Avatar } from "react-native-elements";
 import { useState } from "react";
 import RoundedInlineButton from "./RoundedInlineButton";
+import { auth } from "../firebase";
 
-export default function UserListItem({ addUser, item, handleAddUser }) {
+export default function UserListItem({ addUser, item, handleAddUser, id }) {
   const [enabled, setEnabled] = useState(false);
 
   const toggleSwitch = () => {
@@ -36,23 +37,28 @@ export default function UserListItem({ addUser, item, handleAddUser }) {
         </View>
       </View>
       <View style={tw`flex-1 mr-2`}>
-        {addUser ? (
-          <RoundedInlineButton
-            nameIcon="plus"
-            typeIcon="antdesign"
-            sizeIcon={20}
-            onPress={() => {
-              handleAddUser(item?.userId);
-            }}
-          />
-        ) : (
-          <Switch
-            trackColor={{ false: "white", true: "black" }}
-            thumbColor={enabled ? "rgba(147, 197, 253,1)" : "white"}
-            ios_backgroundColor="#3e3e3e"
-            value={enabled}
-            onValueChange={toggleSwitch}
-          />
+        {id !== auth.currentUser.uid && (
+          <>
+            {addUser ? (
+              <RoundedInlineButton
+                nameIcon="plus"
+                typeIcon="antdesign"
+                sizeIcon={20}
+                disabled={id === auth.currentUser.uid && true}
+                onPress={() => {
+                  handleAddUser(id);
+                }}
+              />
+            ) : (
+              <Switch
+                trackColor={{ false: "white", true: "black" }}
+                thumbColor={enabled ? "rgba(147, 197, 253,1)" : "white"}
+                ios_backgroundColor="#3e3e3e"
+                value={enabled}
+                onValueChange={toggleSwitch}
+              />
+            )}
+          </>
         )}
       </View>
     </View>

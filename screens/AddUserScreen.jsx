@@ -6,15 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import tw from "tailwind-react-native-classnames";
 import { useEffect } from "react";
 import { useState } from "react";
-import {
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  setDoc,
-  where,
-} from "firebase/firestore";
+import { collection, doc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { auth } from "../firebase";
 
@@ -23,22 +15,25 @@ export default function AddUserScreen() {
   const [userInput, setUserInput] = useState("");
   const [userFound, setUserFound] = useState([]);
 
-  const handleAddUser = async () => {
+  console.log(userFound);
+
+  const handleAddUser = async (id) => {
     try {
       const docRef = doc(db, "users", auth.currentUser.uid);
       await setDoc(
         docRef,
         {
-          friends: [],
+          friends: [id],
         },
         { merge: true }
-      );
+      ).then(() => {
+        alert("user has been added");
+        navigation.goBack();
+      });
     } catch (err) {
       console.log(err);
     }
   };
-
-  console.log(typeof userFound);
 
   useEffect(() => {
     userInput.length == 0 && setUserFound([]);
@@ -89,6 +84,7 @@ export default function AddUserScreen() {
               addUser={true}
               handleAddUser={handleAddUser}
               item={user.data}
+              id={user.id}
             />
           ))}
       </ScrollView>
