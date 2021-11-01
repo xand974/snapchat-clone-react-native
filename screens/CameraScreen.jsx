@@ -13,12 +13,15 @@ export default function CameraScreen() {
   const [type, setType] = useState(Camera.Constants.Type.back);
   const camRef = useRef();
   const navigation = useNavigation();
+
+  //#region layout options nav
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTransparent: true,
     });
   }, []);
-
+  //#endregion
+  //#region camera permission
   useEffect(() => {
     const askPermission = async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -31,9 +34,10 @@ export default function CameraScreen() {
     return <View />;
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return <Text>Accès refusé à la camera</Text>;
   }
-
+  //#endregion
+  //#region  take photo function
   const takePhoto = async () => {
     if (!camRef) return;
     try {
@@ -43,6 +47,7 @@ export default function CameraScreen() {
       alert(err);
     }
   };
+  //#endregion
 
   return (
     <View style={tw`items-center justify-center w-full h-full`}>

@@ -3,7 +3,7 @@ import { Text, View, ScrollView, TouchableOpacity } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import SendListItem from "../components/SendListItem";
+import UserListItem from "../components/UserListItem";
 import SendButton from "../components/SendButton";
 
 export default function SendScreen() {
@@ -19,19 +19,12 @@ export default function SendScreen() {
   return (
     <SafeAreaView style={tw`flex-1 bg-white h-full`}>
       <ScrollView>
-        <SendListItem />
-        <SendListItem />
-        <SendListItem />
-        <SendListItem />
-        <SendListItem />
-        <SendListItem />
-        <SendListItem />
-        <SendListItem />
-        <SendListItem />
-        <SendListItem />
-        <SendListItem />
-        <SendListItem />
-        <SendListItem />
+        <UserListItem />
+        <UserListItem />
+        <UserListItem />
+        <UserListItem />
+        <UserListItem />
+        <UserListItem />
       </ScrollView>
       <SendButton bg={"bg-gray-200"} disabled={true} />
     </SafeAreaView>

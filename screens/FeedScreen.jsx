@@ -12,8 +12,9 @@ import Icon from "react-native-vector-icons/Entypo";
 import AntIcon from "react-native-vector-icons/AntDesign";
 import tw from "tailwind-react-native-classnames";
 import { auth } from "../firebase";
-import CustomListItem from "../components/CustomListItem";
-import { signOut } from "@firebase/auth";
+import FeedListItem from "../components/FeedListItem";
+import { logout } from "../firebaseCalls";
+import RoundedInlineButton from "../components/RoundedInlineButton";
 
 //#region WaitFunction
 const wait = (timeout) => {
@@ -33,17 +34,7 @@ export default function FeedScreen() {
   }, []);
   //#endregion
 
-  const logout = async () => {
-    try {
-      await signOut(auth).then(() => {
-        navigation.replace("LoginScreen");
-      });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  //#region  Layout
+  //#region Nav Layout
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "Chat",
@@ -58,15 +49,26 @@ export default function FeedScreen() {
           <TouchableOpacity onPress={() => logout()}>
             <Avatar rounded source={{ uri: user.photoURL }} />
           </TouchableOpacity>
-          <TouchableOpacity style={tw`bg-gray-100 p-2 ml-3 rounded-full`}>
-            <Icon name="magnifying-glass" size={20} color="gray" />
-          </TouchableOpacity>
+          <RoundedInlineButton
+            typeIcon="entypo"
+            sizeIcon={20}
+            colorIcon="black"
+            styles={{ marginLeft: 10 }}
+            nameIcon="magnifying-glass"
+            onPress={() => navigation.navigate("FindUserScreen")}
+          />
         </View>
       ),
       headerRight: () => (
-        <TouchableOpacity style={tw`bg-gray-100 rounded-full p-2`}>
-          <AntIcon name="adduser" size={20} color="gray" />
-        </TouchableOpacity>
+        <RoundedInlineButton
+          typeIcon="antdesign"
+          nameIcon="adduser"
+          sizeIcon={20}
+          colorIcon="gray"
+          onPress={() => {
+            navigation.navigate("AddUserScreen");
+          }}
+        />
       ),
     });
   }, []);
@@ -80,7 +82,7 @@ export default function FeedScreen() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <CustomListItem />
+        <FeedListItem />
       </ScrollView>
     </SafeAreaView>
   );

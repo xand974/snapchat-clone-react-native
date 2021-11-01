@@ -4,8 +4,9 @@ import tw from "tailwind-react-native-classnames";
 
 export default function StoryScreen() {
   return (
-    <SafeAreaView style={tw`items-center justify-center bg-green-400`}>
+    <SafeAreaView style={tw`items-center justify-center h-full bg-green-400`}>
       <Text>Story</Text>
+      <Text>features will be implemented later</Text>
     </SafeAreaView>
   );
 }

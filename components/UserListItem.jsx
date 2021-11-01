@@ -3,8 +3,9 @@ import { StyleSheet, Switch, Text, TouchableOpacity, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import { Avatar } from "react-native-elements";
 import { useState } from "react";
+import RoundedInlineButton from "./RoundedInlineButton";
 
-export default function SendListItem() {
+export default function UserListItem({ addUser }) {
   const [enabled, setEnabled] = useState(false);
 
   const toggleSwitch = () => {
@@ -29,18 +30,27 @@ export default function SendListItem() {
       </View>
       <View style={tw.style(``, { flex: 4 })}>
         <View style={tw``}>
-          <Text style={tw`font-bold mb-1 text-lg`}>Alexandre</Text>
+          <Text style={tw`font-bold text-lg`}>Alexandre</Text>
           <Text style={tw`text-sm`}>37🔥</Text>
         </View>
       </View>
       <View style={tw`flex-1 mr-2`}>
-        <Switch
-          trackColor={{ false: "white", true: "black" }}
-          thumbColor={enabled ? "rgba(147, 197, 253,1)" : "white"}
-          ios_backgroundColor="#3e3e3e"
-          value={enabled}
-          onValueChange={toggleSwitch}
-        />
+        {addUser ? (
+          <RoundedInlineButton
+            nameIcon="plus"
+            typeIcon="antdesign"
+            sizeIcon={20}
+            onPress={() => {}}
+          />
+        ) : (
+          <Switch
+            trackColor={{ false: "white", true: "black" }}
+            thumbColor={enabled ? "rgba(147, 197, 253,1)" : "white"}
+            ios_backgroundColor="#3e3e3e"
+            value={enabled}
+            onValueChange={toggleSwitch}
+          />
+        )}
       </View>
     </View>
   );

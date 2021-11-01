@@ -7,6 +7,8 @@ import { auth } from "./firebase";
 import Loading from "./components/Loading";
 import MainScreen from "./screens/MainScreen";
 import SendScreen from "./screens/SendScreen";
+import FindUserScreen from "./screens/FindUserScreen";
+import AddUserScreen from "./screens/AddUserScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -53,6 +55,22 @@ export default function App() {
             <Stack.Screen
               component={SendScreen}
               name="SendScreen"
+              options={{
+                headerShadowVisible: false,
+                headerBackTitle: "",
+              }}
+            />
+            <Stack.Screen
+              component={FindUserScreen}
+              name="FindUserScreen"
+              options={{
+                headerShadowVisible: false,
+                headerBackTitle: "",
+              }}
+            />
+            <Stack.Screen
+              component={AddUserScreen}
+              name="AddUserScreen"
               options={{
                 headerShadowVisible: false,
                 headerBackTitle: "",
