@@ -14,7 +14,7 @@ export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    onAuthStateChanged(
+    const unsubscribed = onAuthStateChanged(
       auth,
       (user) => {
         if (user) {
@@ -29,6 +29,7 @@ export default function App() {
         console.log(err);
       }
     );
+    return unsubscribed;
   }, []);
 
   if (!loading) {

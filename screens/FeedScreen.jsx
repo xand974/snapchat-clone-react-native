@@ -12,7 +12,7 @@ import Icon from "react-native-vector-icons/Entypo";
 import AntIcon from "react-native-vector-icons/AntDesign";
 import tw from "tailwind-react-native-classnames";
 import { auth } from "../firebase";
-import ListItem from "../components/ListItem";
+import CustomListItem from "../components/CustomListItem";
 import { signOut } from "@firebase/auth";
 
 //#region WaitFunction
@@ -80,7 +80,7 @@ export default function FeedScreen() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <ListItem />
+        <CustomListItem />
       </ScrollView>
     </SafeAreaView>
   );

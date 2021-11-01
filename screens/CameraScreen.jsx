@@ -5,7 +5,7 @@ import { Camera } from "expo-camera";
 import { useNavigation } from "@react-navigation/native";
 import Icon from "react-native-vector-icons/EvilIcons";
 import TypeIcon from "react-native-vector-icons/Entypo";
-import FeatherIcon from "react-native-vector-icons/Feather";
+import SendButton from "../components/SendButton";
 
 export default function CameraScreen() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -102,21 +102,11 @@ export default function CameraScreen() {
               <TypeIcon name="cross" size={40} color="black" />
             </TouchableOpacity>
           </View>
-
-          <View
-            style={tw.style(`w-12 h-12 bg-white z-30 absolute rounded-full`, {
-              bottom: "10%",
-              right: "5%",
-            })}
-          >
-            <TouchableOpacity
-              onPress={() => navigation.navigate("SendScreen", { ...preview })}
-              style={tw`justify-center items-center h-full w-full`}
-            >
-              <FeatherIcon name="send" size={20} color="black" />
-            </TouchableOpacity>
-          </View>
-
+          <SendButton
+            disabled={false}
+            bg={"bg-white"}
+            onPress={() => navigation.navigate("SendScreen", { ...preview })}
+          />
           <ImageBackground
             source={{ uri: preview?.uri }}
             width={100}

@@ -9,7 +9,7 @@ import {
 import { Avatar } from "react-native-elements";
 import tw from "tailwind-react-native-classnames";
 import Icon from "react-native-vector-icons/Feather";
-export default function ListItem() {
+export default function CustomListItem() {
   return (
     <TouchableWithoutFeedback style={tw` `}>
       <View
