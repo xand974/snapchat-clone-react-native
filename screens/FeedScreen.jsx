@@ -46,7 +46,7 @@ export default function FeedScreen() {
       headerShadowVisible: false,
       headerLeft: () => (
         <View style={tw`flex-row items-center`}>
-          <TouchableOpacity onPress={() => logout()}>
+          <TouchableOpacity onPress={() => logout(navigation)}>
             <Avatar rounded source={{ uri: user.photoURL }} />
           </TouchableOpacity>
           <RoundedInlineButton

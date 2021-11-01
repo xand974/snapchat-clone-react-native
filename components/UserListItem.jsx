@@ -5,12 +5,13 @@ import { Avatar } from "react-native-elements";
 import { useState } from "react";
 import RoundedInlineButton from "./RoundedInlineButton";
 
-export default function UserListItem({ addUser }) {
+export default function UserListItem({ addUser, item, handleAddUser }) {
   const [enabled, setEnabled] = useState(false);
 
   const toggleSwitch = () => {
     setEnabled((prev) => (prev = !prev));
   };
+
   return (
     <View
       style={tw.style(
@@ -24,13 +25,13 @@ export default function UserListItem({ addUser }) {
           size={40}
           rounded
           source={{
-            uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRLe5PABjXc17cjIMOibECLM7ppDwMmiDg6Dw&usqp=CAU",
+            uri: item?.photoURL,
           }}
         />
       </View>
       <View style={tw.style(``, { flex: 4 })}>
         <View style={tw``}>
-          <Text style={tw`font-bold text-lg`}>Alexandre</Text>
+          <Text style={tw`font-bold text-lg`}>{item?.displayName}</Text>
           <Text style={tw`text-sm`}>37🔥</Text>
         </View>
       </View>
@@ -40,7 +41,9 @@ export default function UserListItem({ addUser }) {
             nameIcon="plus"
             typeIcon="antdesign"
             sizeIcon={20}
-            onPress={() => {}}
+            onPress={() => {
+              handleAddUser(item?.userId);
+            }}
           />
         ) : (
           <Switch

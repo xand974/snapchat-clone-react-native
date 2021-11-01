@@ -9,6 +9,9 @@ import MainScreen from "./screens/MainScreen";
 import SendScreen from "./screens/SendScreen";
 import FindUserScreen from "./screens/FindUserScreen";
 import AddUserScreen from "./screens/AddUserScreen";
+import { db } from "./firebase";
+import { doc } from "@firebase/firestore";
+import { getDoc, setDoc } from "firebase/firestore";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -18,10 +21,22 @@ export default function App() {
   useEffect(() => {
     const unsubscribed = onAuthStateChanged(
       auth,
-      (user) => {
+      async (user) => {
         if (user) {
+          const dbRef = doc(db, "users", user.uid);
+          const docFound = await getDoc(dbRef);
+
           setLoggedIn(true);
           setLoading(true);
+
+          if (!docFound.exists()) {
+            await setDoc(dbRef, {
+              displayName: user.displayName,
+              photoURL: user.photoURL,
+            });
+          } else {
+            return;
+          }
         } else {
           setLoggedIn(false);
           setLoading(true);
@@ -32,7 +47,7 @@ export default function App() {
       }
     );
     return unsubscribed;
-  }, []);
+  }, [auth]);
 
   if (!loading) {
     return <Loading />;

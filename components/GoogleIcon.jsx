@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import tw from "tailwind-react-native-classnames";
+import Icon from "react-native-vector-icons/AntDesign";
 export default function GoogleIcon({ onPress }) {
   return (
     <TouchableOpacity
