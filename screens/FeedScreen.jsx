@@ -15,9 +15,11 @@ import { auth } from "../firebase";
 import ListItem from "../components/ListItem";
 import { signOut } from "@firebase/auth";
 
+//#region WaitFunction
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
+//#endregion
 
 export default function FeedScreen() {
   const navigation = useNavigation();
@@ -71,9 +73,9 @@ export default function FeedScreen() {
   //#endregion
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={tw`bg-white`}>
       <ScrollView
-        style={tw` h-full pt-3 bg-white`}
+        style={tw` h-full pt-3`}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }

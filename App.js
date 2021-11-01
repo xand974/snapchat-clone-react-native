@@ -6,6 +6,7 @@ import { onAuthStateChanged } from "@firebase/auth";
 import { auth } from "./firebase";
 import Loading from "./components/Loading";
 import MainScreen from "./screens/MainScreen";
+import SendScreen from "./screens/SendScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -48,6 +49,14 @@ export default function App() {
         ) : (
           <Stack.Group>
             <Stack.Screen component={MainScreen} name="MainScreen" />
+            <Stack.Screen
+              component={SendScreen}
+              name="SendScreen"
+              options={{
+                headerShadowVisible: false,
+                headerBackTitle: "",
+              }}
+            />
           </Stack.Group>
         )}
       </Stack.Navigator>

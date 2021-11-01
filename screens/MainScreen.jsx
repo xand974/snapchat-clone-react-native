@@ -7,7 +7,7 @@ import StoryScreen from "./StoryScreen";
 
 export default function MainScreen() {
   return (
-    <Swiper loop={false}>
+    <Swiper loop={false} showsPagination={false}>
       <FeedScreen />
       <CameraScreen />
       <StoryScreen />
