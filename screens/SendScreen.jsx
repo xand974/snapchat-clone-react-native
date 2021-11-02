@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from "react";
-import { Text, View, ScrollView, TouchableOpacity } from "react-native";
+import { ScrollView } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -9,14 +9,15 @@ import { useEffect } from "react";
 import { db, storage } from "../firebase";
 import { ref } from "@firebase/storage";
 import { auth } from "../firebase";
-import { collection, doc, getDoc, getDocs, setDoc } from "@firebase/firestore";
+import { collection, doc, getDoc } from "@firebase/firestore";
 import { useState } from "react";
 import { getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { addDoc, serverTimestamp } from "firebase/firestore";
 
 export default function SendScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { height, width, uri } = route.params;
+  const { uri } = route.params;
   const [friends, setFriends] = useState([]);
   const [selected, setSelected] = useState(null);
 
@@ -24,16 +25,16 @@ export default function SendScreen() {
     setSelected(() => (id === selected ? null : id));
   };
 
-  console.log(selected === null);
-
   const sendSnap = async () => {
     try {
       const docRef = collection(db, "users", selected, "snaps");
-      const fileName = Date.now() + "_" + uri;
-      const storageRef = ref(storage, `snap/${fileName}`);
-      const uploadTask = uploadBytesResumable(storageRef, uri);
+      const response = await fetch(uri);
+      const fileName = Date.now() + "_" + "snap";
+      const blob = await response.blob();
+      const storageRef = ref(storage, `snaps/${selected}/${fileName}`);
+      const uploadTask = uploadBytesResumable(storageRef, blob);
       uploadTask.on(
-        "state_changes",
+        "state_changed",
         (snapshot) => {
           const progress =
             (snapshot.byteTransferred / snapshot.totalBytes) * 100;
@@ -43,15 +44,17 @@ export default function SendScreen() {
           console.log(err);
         },
         () => {
-          getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-            console.log(url);
+          getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+            await addDoc(
+              docRef,
+              { img: url, open: false, timestamp: serverTimestamp() },
+              { merge: true }
+            ).then(() => {
+              navigation.replace("MainScreen");
+            });
           });
         }
       );
-
-      // await setDoc(docRef, { img: fileName, open: false }).then(() => {
-      //   navigation.replace("HomeScreen");
-      // });
     } catch (err) {
       console.log(err);
     }

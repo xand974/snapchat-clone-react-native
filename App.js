@@ -47,7 +47,7 @@ export default function App() {
       }
     );
     return unsubscribed;
-  }, [auth]);
+  }, []);
 
   if (!loading) {
     return <Loading />;
