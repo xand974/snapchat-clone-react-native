@@ -6,19 +6,18 @@ import { useState } from "react";
 import RoundedInlineButton from "./RoundedInlineButton";
 import { auth } from "../firebase";
 
-export default function UserListItem({ addUser, item, handleAddUser, id }) {
-  const [enabled, setEnabled] = useState(false);
-
-  const toggleSwitch = () => {
-    setEnabled((prev) => (prev = !prev));
-  };
-
+export default function UserListItem({
+  addUser,
+  item,
+  handleAddUser,
+  id,
+  value,
+  onValueChange,
+}) {
   return (
     <View
       style={tw.style(
-        `items-center flex-row w-full p-3 bg-${
-          enabled ? "blue-300" : "white"
-        } border-b-2 border-gray-100`
+        `items-center flex-row w-full p-3 bg-${"white"} border-b-2 border-gray-100`
       )}
     >
       <View style={tw`flex-1`}>
@@ -52,10 +51,10 @@ export default function UserListItem({ addUser, item, handleAddUser, id }) {
             ) : (
               <Switch
                 trackColor={{ false: "white", true: "black" }}
-                thumbColor={enabled ? "rgba(147, 197, 253,1)" : "white"}
+                thumbColor={"rgba(147, 197, 253,1)"}
                 ios_backgroundColor="#3e3e3e"
-                value={enabled}
-                onValueChange={toggleSwitch}
+                onValueChange={onValueChange}
+                value={value}
               />
             )}
           </>
@@ -64,5 +63,3 @@ export default function UserListItem({ addUser, item, handleAddUser, id }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({});
