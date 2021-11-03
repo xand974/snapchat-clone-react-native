@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect } from "react";
 import {
   View,
   TouchableOpacity,
@@ -11,10 +11,11 @@ import { Avatar } from "react-native-elements";
 import Icon from "react-native-vector-icons/Entypo";
 import AntIcon from "react-native-vector-icons/AntDesign";
 import tw from "tailwind-react-native-classnames";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import FeedListItem from "../components/FeedListItem";
 import { logout } from "../firebaseCalls";
 import RoundedInlineButton from "../components/RoundedInlineButton";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 
 //#region WaitFunction
 const wait = (timeout) => {
@@ -26,6 +27,7 @@ export default function FeedScreen() {
   const navigation = useNavigation();
   const user = auth.currentUser;
   const [refreshing, setRefreshing] = React.useState(false);
+  const [snaps, setSnaps] = React.useState([]);
 
   //#region refresh
   const onRefresh = React.useCallback(() => {
@@ -74,6 +76,27 @@ export default function FeedScreen() {
   }, []);
   //#endregion
 
+  useEffect(() => {
+    const fetchSnaps = async () => {
+      try {
+        const docRef = collection(db, "users", auth.currentUser.uid, "snaps");
+        const q = query(docRef, orderBy("timestamp", "desc"));
+        const res = await getDocs(q);
+
+        setSnaps(
+          res.docs.map((doc) => {
+            return { id: doc.id, data: doc.data() };
+          })
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    return fetchSnaps();
+  }, []);
+
+  console.log(snaps);
+
   return (
     <SafeAreaView style={tw`bg-white`}>
       <ScrollView
@@ -82,7 +105,9 @@ export default function FeedScreen() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <FeedListItem />
+        {snaps.map((snap) => (
+          <FeedListItem key={snap.id} item={snap} />
+        ))}
       </ScrollView>
     </SafeAreaView>
   );

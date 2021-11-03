@@ -12,6 +12,7 @@ import AddUserScreen from "./screens/AddUserScreen";
 import { db } from "./firebase";
 import { doc } from "@firebase/firestore";
 import { getDoc, setDoc } from "firebase/firestore";
+import SnapScreen from "./screens/SnapScreen";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -89,6 +90,13 @@ export default function App() {
               options={{
                 headerShadowVisible: false,
                 headerBackTitle: "",
+              }}
+            />
+            <Stack.Screen
+              component={SnapScreen}
+              name="SnapScreen"
+              options={{
+                headerShown: false,
               }}
             />
           </Stack.Group>

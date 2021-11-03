@@ -47,7 +47,13 @@ export default function SendScreen() {
           getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
             await addDoc(
               docRef,
-              { img: url, open: false, timestamp: serverTimestamp() },
+              {
+                img: url,
+                open: false,
+                timestamp: serverTimestamp(),
+                username: auth.currentUser.displayName,
+                photoUrl: auth.currentUser.photoURL,
+              },
               { merge: true }
             ).then(() => {
               navigation.replace("MainScreen");
