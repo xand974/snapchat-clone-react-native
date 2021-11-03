@@ -26,7 +26,10 @@ export default function AddUserScreen() {
     try {
       const docRef = doc(db, "users", auth.currentUser.uid);
       const userResponse = await getDoc(docRef);
-      if (!userResponse.data().friends.includes(id)) {
+      if (
+        userResponse.data().friends === undefined ||
+        !userResponse.data().friends.includes(id)
+      ) {
         await updateDoc(docRef, {
           friends: arrayUnion(id),
         }).then(() => {

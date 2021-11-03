@@ -34,6 +34,7 @@ export default function App() {
             await setDoc(dbRef, {
               displayName: user.displayName,
               photoURL: user.photoURL,
+              friends: [],
             });
           } else {
             return;

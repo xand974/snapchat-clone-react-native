@@ -1,23 +1,33 @@
 import React from "react";
-import { StyleSheet, Image, TouchableWithoutFeedback } from "react-native";
+import { Image, TouchableWithoutFeedback, View } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import { useNavigation, useRoute } from "@react-navigation/native";
+import { useEffect } from "react";
+import CountDownTimer from "../components/CountDownTimer";
 export default function SnapScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { img, setOpen } = route.params;
+  const { img } = route.params;
+
+  useEffect(() => {
+    if (!img) exit();
+  }, [img]);
+
+  const exit = () => {
+    navigation.goBack();
+  };
 
   return (
     <TouchableWithoutFeedback
       style={tw`w-full h-full`}
       onPress={() => {
-        setOpen;
-        navigation.goBack();
+        navigation.replace("MainScreen");
       }}
     >
-      <Image source={{ uri: img }} style={tw`h-full w-full`} />
+      <View>
+        <CountDownTimer></CountDownTimer>
+        <Image source={{ uri: img }} style={tw`h-full w-full`} />
+      </View>
     </TouchableWithoutFeedback>
   );
 }
-
-const styles = StyleSheet.create({});
