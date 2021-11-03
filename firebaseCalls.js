@@ -5,7 +5,7 @@ import { logInAsync } from "expo-google-app-auth";
 import { signOut } from "@firebase/auth";
 import { auth } from "./firebase";
 
-export const login = async (navigation) => {
+export const login = async () => {
   try {
     const result = await logInAsync({
       androidClientId: REACT_APP_ANDROID_CLIENT_ID,
@@ -16,7 +16,6 @@ export const login = async (navigation) => {
       const { idToken, accessToken } = result;
       const credential = GoogleAuthProvider.credential(idToken, accessToken);
       await signInWithCredential(auth, credential);
-      navigation.replace("MainScreen");
     } else {
       return { cancelled: true };
     }
